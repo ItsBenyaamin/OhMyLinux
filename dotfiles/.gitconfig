@@ -1,0 +1,14 @@
+[user]
+	email = me@benyaamin.com
+	name = Benyamin Eskandari
+	signingkey = me@benyaamin.com
+[init]
+	defaultBranch = main
+[core]
+	autocrlf = input
+
+[commit]
+	gpgsign = true
+
+[tag]
+	gpgSign = true

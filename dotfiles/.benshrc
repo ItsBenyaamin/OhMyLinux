@@ -1,0 +1,60 @@
+##### ALIASES #####
+###################
+
+alias c='clear'
+alias e='exit'
+alias poff='poweroff'
+alias cwd='pwd | tr -d "\r\n" | xclip -selection clipboard'
+alias untar='tar xvf'
+alias sudo='sudo '
+alias sysctl='sudo systemctl'
+alias fbigfiles='find / -type f -printf "%b %p\0" | sort -rzn | head -zn 20 | numfmt -z --from-unit=512 --to=iec | tr "\0" "\n"'
+
+# Pacman
+alias pacman='sudo pacman'
+alias pacup='pacman -Syu'
+alias paci='pacman -S'
+alias pacs='pacman -Ss'
+
+# edit common configs & files in nvim
+alias ebensh='nvim ~/.benshrc'
+alias evimc='nvim ~/.config/nvim/'
+alias ezsh='nvim ~/.zshrc'
+
+# Zoxide
+alias ls='eza --icons=always --sort name --group-directories-first'
+alias lsd='eza --icons=always --sort name -D --group-directories-first'
+alias lh='eza --all --icons=always --sort name --group-directories-first'
+alias lhf='eza --all --icons=always --sort name -f --group-directories-first --show-symlinks'
+
+
+# Tmux
+alias tls='tmux ls'
+alias tns='tmux new -t'
+alias tas='tmux a -t'
+
+
+#####  OPTIONS  #####
+#####################
+
+export TERM=xterm-256color
+
+
+
+##### FUNCTIONS #####
+#####################
+
+# Check if nvim is installed or not to run it instead of `vim`.
+if [[ -n "$(command -v nvim)" ]]; then
+    alias vi='nvim'
+    alias vim='nvim'
+else
+    echo "Nvim is not installed!"
+fi
+
+# Check if zoxide is installed & initialize it
+if [[ -n "$(command -v zoxide)" ]]; then
+    eval "$(zoxide init zsh)"
+else
+    echo "Zoxide is not installed!"
+fi

@@ -1,0 +1,225 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 30,
+    "spacing": 4,
+    "margin-top": 0,
+    "margin-left": 0,
+    "margin-right": 0,
+    "modules-left": [
+	"custom/shatelmobile",
+    ],
+    "modules-center": [
+        "hyprland/workspaces"
+    ],
+    "modules-right": [
+        "cpu",
+        "memory",
+        "pulseaudio",
+        "network",
+	"hyprland/language",
+        "tray",
+	"battery",
+	"power-profiles-daemon",
+        "clock",
+	"custom/notification",
+        "custom/power"
+    ],
+    
+    "hyprland/workspaces": {
+        "disable-scroll": true,
+        "all-outputs": true,
+        "format": "{icon}",
+        "format-icons": {
+            "1": "󰲠",
+            "2": "󰲢",
+            "3": "󰲤",
+            "4": "󰲦",
+            "5": "󰲨",
+            "6": "󰲪",
+            "7": "󰲬",
+            "8": "󰲮",
+            "9": "󰲰",
+            "10": "󰿬"
+        },
+        "persistent-workspaces": {
+            "*": 5
+        }
+    },
+    
+    "clock": {
+        "timezone": "Asia/Tehran",
+        "format": "\uf017  {:%H:%M}",
+        "format-alt": "{:%A, %B %d, %Y (%R)}",
+        "tooltip-format": "<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "mode": "year",
+            "mode-mon-col": 3,
+            "weeks-pos": "right",
+            "on-scroll": 1,
+            "format": {
+                "months": "<span color='#ffead3'><b>{}</b></span>",
+                "days": "<span color='#ecc6d9'><b>{}</b></span>",
+                "weeks": "<span color='#99ffdd'><b>W{}</b></span>",
+                "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
+                "today": "<span color='#ff6699'><b><u>{}</u></b></span>"
+            }
+        },
+        "actions": {
+            "on-click-right": "mode",
+            "on-click-forward": "tz_up",
+            "on-click-backward": "tz_down",
+            "on-scroll-up": "shift_up",
+            "on-scroll-down": "shift_down"
+        }
+    },
+    
+    "tray": {
+        "icon-size": 12,
+        "spacing": 12 
+    },
+    
+    "cpu": {
+        "format": "󰻠 {usage:2}% {avg_frequency} GHz",
+        "interval": 1,
+        "tooltip": false
+    },
+    
+    "memory": {
+        "format": "󰍛 {used:0.1f}G/{total:0.1f}G",
+        "interval": 1,
+        "tooltip": false
+    },
+
+    "backlight": {
+        "device": "intel_backlight",
+        "format": "{icon} {percent}%",
+        "format-icons": ["󰃞", "󰃟", "󰃠"],
+        "scroll-step": 5,
+        "smooth-scrolling-threshold": 1,
+        "tooltip": true,
+        "tooltip-format": "Brightness: {percent}%",
+        "on-scroll-up": "brightnessctl set 5%+",
+        "on-scroll-down": "brightnessctl set 5%-"
+    },
+    
+    "pulseaudio": {
+        "scroll-step": 5,
+        "format": "{icon} {volume}%",
+        "format-muted": "󰖁 Muted",
+        "format-icons": {
+            "headphone": "󰋋",
+            "hands-free": "󱡏",
+            "headset": "󰋎",
+            "phone": "󰏲",
+            "portable": "󰦧",
+            "car": "󰄋",
+            "default": ["󰕿", "󰖀", "󰕾"]
+        },
+        "on-click": "pavucontrol",
+        "on-click-right": "pactl set-sink-mute @DEFAULT_SINK@ toggle"
+    },
+    
+    "network": {
+        "format-wifi": "󰤨 {signalStrength}%",
+        "format-ethernet": "󰈀  Connected",
+        "format-linked": "󰈀  {ifname} (No IP)",
+        "format-disconnected": "󰤭  Disconnected",
+        "tooltip-format": "ipaddr",
+        "tooltip-format-wifi": "{essid} ({signalStrength}%) {ipaddr}  󰤨",
+        "tooltip-format-ethernet": "{ipaddr} 󰈀",
+        "tooltip-format-disconnected": "Disconnected",
+        "max-length": 50,
+        "on-click": "nm-connection-editor"
+    },
+    
+    "bluetooth": {
+        "format": "󰂯",
+        "format-disabled": "󰂲",
+        "format-off": "󰂲",
+        "format-on": "󰂯",
+        "format-connected": "󰂱 {num_connections}",
+        "tooltip-format": "{controller_alias}\t{controller_address}",
+        "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+        "on-click": "blueman-manager"
+    },
+    
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon} {capacity}%",
+        "format-charging": "󰂄 {capacity}%",
+        "format-plugged": "󰚥 {capacity}%",
+        "format-alt": "{icon} {time}",
+        "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+    },
+    
+    "custom/power": {
+        "format": "⏻",
+        "tooltip": false,
+        "on-click": "wlogout -T 400 -B 400 -P 0 -b 4 -l ~/.config/wlogout/layout -C ~/.config/wlogout/style.css"
+    },
+
+    "custom/notification": {
+        "escape": true,
+        "exec": "swaync-client -swb",
+        "exec-if": "which swaync-client",
+        "format": " {icon} ",
+        "format-icons": {
+            "none": "󰅺",
+            "notification": "󰡟"
+        },
+        "on-click": "sleep 0.1 && swaync-client -t -sw",
+        "return-type": "json",
+        "tooltip": false
+    },
+    "mpd": {
+        "format": "{stateIcon} {consumeIcon} {randomIcon} {repeatIcon} {singleIcon} {artist} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ ",
+        "format-disconnected": "Disconnected ",
+        "format-stopped": "{consumeIcon} {randomIcon} {repeatIcon} {singleIcon} Stopped ",
+        "unknown-tag": "N/A",
+        "interval": 5,
+        "consume-icons": {
+            "on": " "
+        },
+        "random-icons": {
+            "off": "<span color=\"#f53c3c\"></span> ",
+            "on": " "
+        },
+        "repeat-icons": {
+            "on": " "
+        },
+        "single-icons": {
+            "on": "1 "
+        },
+        "state-icons": {
+            "paused": "",
+            "playing": "󰐊"
+        },
+        "tooltip-format": "MPD (connected)",
+        "tooltip-format-disconnected": "MPD (disconnected)"
+    },
+    "custom/shatelmobile": {
+        "exec":"/home/ben/.config/helpers/shatelmobile.sh",
+        "interval": 1800
+    },
+    "power-profiles-daemon": {
+        "format": "{icon}",
+        "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
+        "tooltip": true,
+        "format-icons": {
+            "default": "",
+            "performance": "",
+            "balanced": "",
+            "power-saver": ""
+        }
+    },
+    "hyprland/language": {
+        "format": "{}",
+	"format-en": "EN",
+	"format-fa": "FA"
+    }
+}

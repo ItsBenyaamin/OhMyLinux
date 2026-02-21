@@ -1,6 +1,9 @@
+fastfetch
+
+source ~/.env
+
 ##### ALIASES #####
 ###################
-
 alias c='clear'
 alias e='exit'
 alias poff='poweroff'
@@ -36,14 +39,12 @@ alias tas='tmux a -t'
 
 #####  OPTIONS  #####
 #####################
-
 export TERM=xterm-256color
-
-
+export QT_QPA_PLATFORM=wayland-egl
+export GDK_BACKEND=wayland
 
 ##### FUNCTIONS #####
 #####################
-
 # Check if nvim is installed or not to run it instead of `vim`.
 if [[ -n "$(command -v nvim)" ]]; then
     alias vi='nvim'
@@ -58,3 +59,10 @@ if [[ -n "$(command -v zoxide)" ]]; then
 else
     echo "Zoxide is not installed!"
 fi
+
+
+##### Other #####
+#####################
+source /usr/share/nvm/init-nvm.sh
+
+export OLLAMA_MODELS=~/.ollama/

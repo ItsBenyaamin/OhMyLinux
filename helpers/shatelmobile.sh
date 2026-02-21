@@ -1,9 +1,11 @@
 #!/bin/bash
 
+source ~/.env
+
 # First, login in https://my.shatelmobile.ir
 # Then, Extract these two values from headers of /remained request
-session="session=xxx"
-msisdn='{"msisdn":"xxxx"}'
+session="session=$SHATEL_SESSION"
+msisdn="{\"msisdn\":\"$SHATEL_NUM\"}"
 
 result=$(curl 'https://my.shatelmobile.ir/remained' \
     -H 'Accept: undefined' \
@@ -37,7 +39,7 @@ if [[ "$remained" != "0.0" ]]; then
         unit="MB"
     fi
 
-    echo "$remained $unit"
+    echo "  $remained $unit"
 else
-    echo "-!!-"
+    echo "  -!!-"
 fi

@@ -10,6 +10,7 @@ map({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 -- For conciseness
 local opts = { noremap = true, silent = true }
 
+-- Open Method signature popup
 map('i', '<c-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', { desc = 'Signature help' })
 
 -- Select all
@@ -87,4 +88,4 @@ map('v', 'p', '"_dP', opts)
 map('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
 map('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 map('n', '<leader>d', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
-map('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
+-- map('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })

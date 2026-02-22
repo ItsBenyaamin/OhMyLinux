@@ -8,11 +8,12 @@ return {
     'WhoIsSethDaniel/mason-tool-installer.nvim',
 
     -- Useful status updates for LSP.
-    -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
     { 'j-hui/fidget.nvim', opts = {} },
 
     -- Allows extra capabilities provided by nvim-cmp
+    'hrsh7th/nvim-cmp',
     'hrsh7th/cmp-nvim-lsp',
+    'saghen/blink.cmp',
   },
   config = function()
     -- Brief aside: **What is LSP?**
@@ -156,13 +157,7 @@ return {
       gopls = {},
       -- rust_analyzer = {},
       -- pyright = {},
-      -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-      --
-      -- Some languages (like typescript) have entire language plugins that can be useful:
-      --    https://github.com/pmizio/typescript-tools.nvim
-      --
-      -- But for many setups, the LSP (`tsserver`) will work just fine
-      ts_ls = {}, -- tsserver is deprecated
+      ts_ls = {},
       ruff = {},
       pylsp = {
         settings = {

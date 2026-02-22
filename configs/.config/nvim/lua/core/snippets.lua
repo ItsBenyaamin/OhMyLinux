@@ -14,11 +14,10 @@ vim.diagnostic.config {
       return string.format('%s %s', code, diagnostic.message)
     end,
   },
+  severity_sort = true,
   underline = false,
   update_in_insert = true,
-  float = {
-    source = 'always', -- Or "if_many"
-  },
+  float = { border = 'rounded', source = 'if_many' },
   -- Make diagnostic background transparent
   on_ready = function()
     vim.cmd 'highlight DiagnosticVirtualText guibg=NONE'

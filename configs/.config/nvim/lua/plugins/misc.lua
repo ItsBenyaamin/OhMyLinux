@@ -41,4 +41,5 @@ return {
       require('colorizer').setup()
     end,
   },
+  { 'NMAC427/guess-indent.nvim', opts = {} },
 }

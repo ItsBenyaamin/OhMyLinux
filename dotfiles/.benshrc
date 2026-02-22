@@ -30,12 +30,15 @@ alias lsd='eza --icons=always --sort name -D --group-directories-first'
 alias lh='eza --all --icons=always --sort name --group-directories-first'
 alias lhf='eza --all --icons=always --sort name -f --group-directories-first --show-symlinks'
 
-
 # Tmux
 alias tls='tmux ls'
 alias tns='tmux new -t'
 alias tas='tmux a -t'
 
+# Golang
+alias gr='go run *.go'
+alias gb='go build'
+alias gg='go get'
 
 #####  OPTIONS  #####
 #####################

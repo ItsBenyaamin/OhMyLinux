@@ -55,3 +55,6 @@ python-pip
 cliphist
 keyd
 ristretto
+fprintd
+imagemagick
+libfprint

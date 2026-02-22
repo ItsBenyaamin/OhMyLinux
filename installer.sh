@@ -192,3 +192,13 @@ rustup default stable
 # configure keyd to map copilet button to right ctrl
 sudo cp -f configs/keyd.conf /etc/keyd/default.conf
 sudo systemctl enable keyd --now
+
+echo -e "${boldBlue}> Configuring FingerPrint... Roll your finger :D${noColor}"
+fprintd-enroll
+
+echo -e "${boldBlue}> Adding PAM to system auth...${noColor}"
+sudo sed -i '2i auth            sufficient                      pam_fprintd.so
+' /etc/pam.d/system-auth
+
+echo -e "${boldBlue}> Enable & start fprintd service...${noColor}"
+sudo systemctl enable --now fprintd

@@ -16,7 +16,7 @@ alias fbigfiles='find / -type f -printf "%b %p\0" | sort -rzn | head -zn 20 | nu
 # Pacman
 alias pacman='sudo pacman'
 alias pacup='pacman -Syu'
-alias paci='pacman -S'
+alias paci='pacman -S --noconfirm'
 alias pacs='pacman -Ss'
 
 # edit common configs & files in nvim

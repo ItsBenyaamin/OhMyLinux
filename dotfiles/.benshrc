@@ -1,4 +1,7 @@
-fastfetch
+# Don't run fastfetch if in tmux session
+if [ ! "$TERM_PROGRAM" = tmux ]; then
+  fastfetch
+fi
 
 source ~/.env
 

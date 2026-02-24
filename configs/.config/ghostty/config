@@ -43,14 +43,14 @@
 # # Just for example:
 # resize-overlay-duration = 4s 200ms
 
-shell-integration-features = no-cursor
+shell-integration-features = no-cursor, ssh-env
 cursor-style = block
 cursor-color = #FFFFFF
 cursor-opacity = 1
 
 font-size = 15
-background-opacity = .8
-background-blur = true
+background-opacity = .9
+background-blur = false
 
 # # Light Themes
 # theme = Dayfox
@@ -64,7 +64,7 @@ background-blur = true
 # theme = Mariana
 # theme = Material Darker
 # theme = Monokai Pro Machine
-theme = Night Owl
+# theme = Night Owl
 
 
 keybind = ctrl+enter=text:\r
@@ -77,3 +77,4 @@ gtk-wide-tabs = false
 gtk-tabs-location = hidden
 
 async-backend = epoll
+mouse-scroll-multiplier = 0.95

@@ -40,6 +40,14 @@ alias gr='go run *.go'
 alias gb='go build'
 alias gg='go get'
 
+# Git
+alias gis='git status'
+alias gia='git add'
+alias gial='git add -A'
+alias gic='git commit -m'
+alias gips='git push'
+alias gipl='git pull'
+
 #####  OPTIONS  #####
 #####################
 export TERM=xterm-256color

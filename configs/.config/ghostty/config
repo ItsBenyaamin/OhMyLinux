@@ -47,6 +47,7 @@ shell-integration-features = no-cursor, ssh-env
 cursor-style = block
 cursor-color = #FFFFFF
 cursor-opacity = 1
+mouse-hide-while-typing = true
 
 font-size = 15
 background-opacity = .9

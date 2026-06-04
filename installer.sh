@@ -199,6 +199,14 @@ create_link dotfilesList "${PWD}/dotfiles" $HOME
 echo -e "${boldBlue}> Create link for configs...${noColor}"
 create_link configsList "${PWD}/configs/.config" "${HOME}/.config"
 
+echo -e "${boldBlue}> Install SDDM theme...${noColor}"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/keyitdev/sddm-astronaut-theme/master/setup.sh)"
+
+
+#echo -e "${boldBlue}> Use cyberpunk SDDM theme...${noColor}"
+#new_theme="cyberpunk"
+#sudo sed -i "s|^ConfigFile=Themes/.*\.conf$|ConfigFile=Themes/${new_theme}.conf|" usr/share/sddm/themes/sddm-astronaut-theme/metadata.desktop
+
 ###############################
 # Post Configuration
 ###############################
@@ -229,16 +237,29 @@ rustup default stable
 sudo cp -f configs/keyd.conf /etc/keyd/default.conf
 sudo systemctl enable keyd --now
 
-echo -e "${boldBlue}> Configuring FingerPrint... Roll your finger :D${noColor}"
-fprintd-enroll $USER
+echo -e "${boldBlue}> Configuring FingerPrint...${noColor}"
+if fprintd-list "$USER" 2>/dev/null | grep -q "no fingers enrolled"; then
+    echo -e "${boldBlue}> Roll your finger...${noColor}"
+    fprintd-enroll $USER
+else
+    echo -e "${boldBlue}> ${yellow}Fingerprint already enrolled! ${noColor}"
+fi
 
-echo -e "${boldBlue}> Adding PAM to Login Page(SDDM)...${noColor}"
-sudo sed -i '2i auth            sufficient                      pam_fprintd.so
-' /etc/pam.d/sddm
+if ! file_contains "pam_fprintd.so" /etc/pam.d/sddm; then
+    echo -e "${boldBlue}> Add FingerPrint auth to Login page(SDDM)...${noColor}"
+    sudo sed -i '2i auth            sufficient                      pam_fprintd.so
+    ' /etc/pam.d/sddm
+else
+    echo -e "${boldBlue}> ${yellow}FingerPrint for Login page is already in use.${noColor}"
+fi
 
-echo -e "${boldBlue}> Adding PAM to system auth...${noColor}"
-sudo sed -i '2i auth            sufficient                      pam_fprintd.so
-' /etc/pam.d/system-auth
+if ! file_contains "pam_fprintd.so" /etc/pam.d/system-auth; then
+    echo -e "${boldBlue}> Adding PAM to system auth...${noColor}"
+    sudo sed -i '2i auth            sufficient                      pam_fprintd.so
+    ' /etc/pam.d/system-auth
+else
+    echo -e "${boldBlue}> ${yellow}FingerPrint for System auth is already in use.${noColor}"
+fi
 
 echo -e "${boldBlue}> Enable & start fprintd service...${noColor}"
 sudo systemctl start fprintd

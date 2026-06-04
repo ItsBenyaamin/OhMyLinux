@@ -13,6 +13,7 @@ mpv
 nvim
 nvm
 ntfs-3g
+npm
 pnpm
 rofi
 rsync
@@ -58,3 +59,4 @@ ristretto
 fprintd
 imagemagick
 libfprint
+hyprpolkitagent

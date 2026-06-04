@@ -15,16 +15,13 @@ noColor='\033[0m'
 
 sleep 0.5
 
-###############################
-# Installing programs
-###############################
-pacmanPrograms=""
-aurPrograms=""
 
+###############################
+# Helper Functions
+###############################
 need_to_install() {
     local app="$1"
-    #if [[ ! -n "$(command -v $app)" ]]; then
-    if pacman -Qs $app >/dev/null; then
+    if pacman -Q $app >/dev/null; then
         echo -e "${boldWhite}> ${app} ${green}already Installed${noColor}"
         return 1
     else
@@ -32,6 +29,40 @@ need_to_install() {
         return 0
     fi
 }
+
+file_contains() {
+    local sentence="$1"
+    local file=$2
+    if [[ $(grep $sentence $file) ]] ; then
+       return 0
+    else
+       return 1
+    fi
+}
+
+file_exists() {
+    local file=$1
+    if [ -f file ]; then
+        return 1
+    else
+	return 0
+    fi
+}
+
+create_link() {
+    local -n entries=$1
+    local dir="$2"
+    local dest="$3"
+    for name in "${entries[@]}"; do
+        ln -s "$dir/$name" $dest
+    done
+}
+
+###############################
+# Installing programs
+###############################
+pacmanPrograms=""
+aurPrograms=""
 
 # Check for Pacman programs
 echo -e "${boldBlue}> Check for ${boldWhite}Pacman${noColor} ${boldBlue}installations...${noColor}"
@@ -44,7 +75,7 @@ done <pacman.txt
 
 # Install pacman packages
 if [[ -n $pacmanPrograms ]]; then
-    sudo pacman -S --needed --noconfirm $pacmanPrograms
+    sudo pacman -Syu --needed --noconfirm $pacmanPrograms
 fi
 
 # Check for AUR programs
@@ -75,16 +106,26 @@ if [[ ! -n "$(command -v zed)" ]]; then
     curl -f https://zed.dev/install.sh | sh
 fi
 
+
+# Install latest node lts
+if file_exists /usr/share/nvm/init-nvm.sh;then
+    if [[ ! -n "$(command -v zed)" ]]; then
+        echo -e "${boldWhite}> Install latest lts version.${noColor}"
+        source /usr/share/nvm/init-nvm.sh
+        nvm install --lts
+    fi
+fi
+
 sleep 0.5
 ###############################
 # Change shell, installing zsh plugins
 ###############################
 currentShell="$SHELL"
-if [ $currentShell == "/usr/bin/zsh" ]; then
+if [ $currentShell == "/bin/zsh" ]; then
     echo -e "${boldWhite}> Shell is Already changed to Zsh.${noColor}"
 else
     echo -e "${boldBlue}> Changing shell to zsh...${noColor}"
-    while ! chsh -s $(which zsh); do
+    while ! sudo usermod -s /bin/zsh $USER; do
         echo -e "${red}ERROR: Authentication failed. Please enter the correct password.${noColor}"
         sleep 1
     done
@@ -149,15 +190,6 @@ done
 ###############################
 # Configuring
 ###############################
-create_link() {
-    local -n entries=$1
-    local dir="$2"
-    local dest="$3"
-    for name in "${entries[@]}"; do
-        ln -s "$dir/$name" $dest
-    done
-}
-
 echo -e "${boldBlue}> Create link for helpers...${noColor}"
 ln -s "${PWD}/helpers" "${HOME}/.config/"
 
@@ -172,7 +204,11 @@ create_link configsList "${PWD}/configs/.config" "${HOME}/.config"
 ###############################
 ADD_LOCAL_BIN_TO_PATH="export PATH=\$PATH:$HOME/.local/bin"
 echo -e "${boldBlue}> Post configuration...${noColor}"
-echo "source ~/.benshrc" >>~/.zshrc
+
+if ! file_contains ".benshrc" ~/.zshrc; then
+    echo "source ~/.benshrc" >>~/.zshrc
+fi
+
 grep -q -x -F "$ADD_LOCAL_BIN_TO_PATH" ~/.zshrc
 IsLocalBinExistInZshrc=$? # 0=true 1=false
 
@@ -194,11 +230,18 @@ sudo cp -f configs/keyd.conf /etc/keyd/default.conf
 sudo systemctl enable keyd --now
 
 echo -e "${boldBlue}> Configuring FingerPrint... Roll your finger :D${noColor}"
-fprintd-enroll
+fprintd-enroll $USER
+
+echo -e "${boldBlue}> Adding PAM to Login Page(SDDM)...${noColor}"
+sudo sed -i '2i auth            sufficient                      pam_fprintd.so
+' /etc/pam.d/sddm
 
 echo -e "${boldBlue}> Adding PAM to system auth...${noColor}"
 sudo sed -i '2i auth            sufficient                      pam_fprintd.so
 ' /etc/pam.d/system-auth
 
 echo -e "${boldBlue}> Enable & start fprintd service...${noColor}"
-sudo systemctl enable --now fprintd
+sudo systemctl start fprintd
+
+echo -e "${boldBlue}> Enable & start waybar service...${noColor}"
+systemctl --user enable --now waybar

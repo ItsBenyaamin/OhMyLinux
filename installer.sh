@@ -199,9 +199,15 @@ create_link dotfilesList "${PWD}/dotfiles" $HOME
 echo -e "${boldBlue}> Create link for configs...${noColor}"
 create_link configsList "${PWD}/configs/.config" "${HOME}/.config"
 
-echo -e "${boldBlue}> Install SDDM theme...${noColor}"
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/keyitdev/sddm-astronaut-theme/master/setup.sh)"
+echo -e "${boldBlue}> Create link for fonts...${noColor}"
+ln -s "${PWD/.fonts}" "${HOME}/.fonts"
 
+if [ ! -d "/usr/share/sddm/themes/sddm-astronaut-theme/" ]; then
+    echo -e "${boldBlue}> Install SDDM theme...${noColor}"
+    bash -c "$(curl -fsSL https://raw.githubusercontent.com/keyitdev/sddm-astronaut-theme/master/setup.sh)"
+else
+    echo -e "${boldBlue}> ${yellow}SDDM theme is already installed...${noColor}"
+fi
 
 #echo -e "${boldBlue}> Use cyberpunk SDDM theme...${noColor}"
 #new_theme="cyberpunk"

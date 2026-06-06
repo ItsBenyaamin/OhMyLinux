@@ -60,3 +60,10 @@ fprintd
 imagemagick
 libfprint
 hyprpolkitagent
+nautilus
+pipewire
+wireplumber
+sof-firmware
+pavucontrol
+pulseaudio
+lazygit

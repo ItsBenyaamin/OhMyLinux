@@ -45,7 +45,7 @@ file_exists() {
     if [ -f file ]; then
         return 1
     else
-	return 0
+        return 0
     fi
 }
 
@@ -75,7 +75,7 @@ done <pacman.txt
 
 # Install pacman packages
 if [[ -n $pacmanPrograms ]]; then
-    sudo pacman -Syu --needed --noconfirm $pacmanPrograms
+    sudo pacman -S --needed --noconfirm $pacmanPrograms
 fi
 
 # Check for AUR programs
@@ -200,7 +200,7 @@ echo -e "${boldBlue}> Create link for configs...${noColor}"
 create_link configsList "${PWD}/configs/.config" "${HOME}/.config"
 
 echo -e "${boldBlue}> Create link for fonts...${noColor}"
-ln -s "${PWD/.fonts}" "${HOME}/.fonts"
+ln -s "${PWD}/.fonts" "${HOME}/fonts"
 
 if [ ! -d "/usr/share/sddm/themes/sddm-astronaut-theme/" ]; then
     echo -e "${boldBlue}> Install SDDM theme...${noColor}"
@@ -208,10 +208,6 @@ if [ ! -d "/usr/share/sddm/themes/sddm-astronaut-theme/" ]; then
 else
     echo -e "${boldBlue}> ${yellow}SDDM theme is already installed...${noColor}"
 fi
-
-#echo -e "${boldBlue}> Use cyberpunk SDDM theme...${noColor}"
-#new_theme="cyberpunk"
-#sudo sed -i "s|^ConfigFile=Themes/.*\.conf$|ConfigFile=Themes/${new_theme}.conf|" usr/share/sddm/themes/sddm-astronaut-theme/metadata.desktop
 
 ###############################
 # Post Configuration

@@ -271,3 +271,6 @@ systemctl --user enable --now waybar
 
 echo -e "${boldBlue}> Start bluetooth service."
 sudo systemctl enable --now bluetooth.service
+
+echo -e "${boldBlue}> Enable and start SSH agent service."
+systemctl --user enable --now ssh-agent.service

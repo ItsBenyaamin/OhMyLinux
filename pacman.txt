@@ -67,3 +67,4 @@ sof-firmware
 pavucontrol
 pulseaudio
 lazygit
+blueman

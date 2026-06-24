@@ -200,7 +200,7 @@ echo -e "${boldBlue}> Create link for configs...${noColor}"
 create_link configsList "${PWD}/configs/.config" "${HOME}/.config"
 
 echo -e "${boldBlue}> Create link for fonts...${noColor}"
-ln -s "${PWD}/.fonts" "${HOME}/fonts"
+ln -s "${PWD}/.fonts" "${HOME}/.fonts"
 
 if [ ! -d "/usr/share/sddm/themes/sddm-astronaut-theme/" ]; then
     echo -e "${boldBlue}> Install SDDM theme...${noColor}"
@@ -268,3 +268,6 @@ sudo systemctl start fprintd
 
 echo -e "${boldBlue}> Enable & start waybar service...${noColor}"
 systemctl --user enable --now waybar
+
+echo -e "${boldBlue}> Start bluetooth service."
+sudo systemctl enable --now bluetooth.service

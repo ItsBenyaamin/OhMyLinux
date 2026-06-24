@@ -235,6 +235,7 @@ hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + V", hl.dsp.exec_cmd(clipboardMenu))
 hl.bind(mainMod .. " + CTRL + Q", hl.dsp.exec_cmd(powerMenu))
+hl.bind(mainMod .. " + F12", hl.dsp.exec_cmd(screenShot))
 
 -- resize focused window with arrow keys
 hl.bind(mainMod .. " + SHIFT + right", hl.dsp.window.resize({ x = 100, y = 0, relative = true}))

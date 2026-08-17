@@ -29,7 +29,6 @@ hl.env("XDG_SESSION_DESKTOP", "Hyprland")
 ---- AUTOSTART ----
 -------------------
 hl.on("hyprland.start", function () 
-  hl.exec_cmd("swaybg -i /home/ben/Pictures/Wallpapers/5817836-2000x1200-desktop-hd-aesthetic-background-photo.jpg")
   hl.exec_cmd("swaync")
   hl.exec_cmd("wl-paste --watch cliphist store")
   hl.exec_cmd("systemctl --user start hyprpolkitagent")

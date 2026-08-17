@@ -51,6 +51,15 @@ alias gic='git commit -m'
 alias gips='git push'
 alias gipl='git pull'
 
+# Laravel
+alias sail="./vendor/bin/sail"
+
+# Docker
+alias dcoup='docker compose up -d'
+alias dcodn='docker compose down'
+alias dcostrt='docker container start'
+alias dcostp='docker container stop'
+
 #####  OPTIONS  #####
 #####################
 export QT_QPA_PLATFORM=wayland-egl

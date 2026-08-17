@@ -248,11 +248,11 @@ else
 fi
 
 if ! file_contains "pam_fprintd.so" /etc/pam.d/sddm; then
-    echo -e "${boldBlue}> Add FingerPrint auth to Login page(SDDM)...${noColor}"
-    sudo sed -i '2i auth            sufficient                      pam_fprintd.so
-    ' /etc/pam.d/sddm
+   echo -e "${boldBlue}> Add FingerPrint auth to Login page(SDDM)...${noColor}"
+   sudo sed -i '2i auth            sufficient                      pam_fprintd.so
+   ' /etc/pam.d/sddm
 else
-    echo -e "${boldBlue}> ${yellow}FingerPrint for Login page is already in use.${noColor}"
+   echo -e "${boldBlue}> ${yellow}FingerPrint for Login page is already in use.${noColor}"
 fi
 
 if ! file_contains "pam_fprintd.so" /etc/pam.d/system-auth; then
@@ -274,3 +274,6 @@ sudo systemctl enable --now bluetooth.service
 
 echo -e "${boldBlue}> Enable and start SSH agent service."
 systemctl --user enable --now ssh-agent.service
+
+echo -e "${boldBlue}> Enable and start wallpaper service."
+systemctl --user enable --now hyprpaper.service

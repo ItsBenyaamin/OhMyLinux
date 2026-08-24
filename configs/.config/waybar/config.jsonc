@@ -7,7 +7,7 @@
     "margin-left": 0,
     "margin-right": 0,
     "modules-left": [
-	"custom/shatelmobile",
+        "custom/shatelmobile",
     ],
     "modules-center": [
         "hyprland/workspaces"
@@ -17,15 +17,15 @@
         "memory",
         "pulseaudio",
         "network",
-	"hyprland/language",
+        "hyprland/language",
         "tray",
-	"battery",
-	"power-profiles-daemon",
+        "battery",
+        "power-profiles-daemon",
         "clock",
-	"custom/notification",
+        "custom/notification",
         "custom/power"
     ],
-    
+
     "hyprland/workspaces": {
         "disable-scroll": true,
         "all-outputs": true,
@@ -219,7 +219,7 @@
     },
     "hyprland/language": {
         "format": "{}",
-	"format-en": "EN",
-	"format-fa": "FA"
+        "format-en": "EN",
+        "format-fa": "FA"
     }
 }

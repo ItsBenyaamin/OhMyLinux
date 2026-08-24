@@ -78,3 +78,5 @@ gvfs
 power-profiles-daemon
 xclip
 copyq
+papirus-icon-theme
+gum

@@ -117,6 +117,15 @@ if file_exists /usr/share/nvm/init-nvm.sh;then
 fi
 
 sleep 0.5
+
+###############################
+# Ping user for preferences
+###############################
+echo -e "${boldBlue}QUESTION: Do you want to configure ${boldWhite}Fingerprint authentication${noColor} ${boldBlue}?${noColor}"
+FNGPRNT=$(gum choose "Yes" "No")
+
+echo -e "${boldBlue}QUESTION: Does your keyboard have ${boldWhite}Copilot${noColor} ${boldBlue}button?${noColor}"
+COPILOT=$(gum choose "Yes" "No")
 ###############################
 # Change shell, installing zsh plugins
 ###############################
@@ -164,34 +173,15 @@ else
     fi
 fi
 
-###############################
-# Pre Configuring
-###############################
-mapfile -t configsList < <(find "configs/.config" -maxdepth 1 -mindepth 1 -printf "%f\n")
-mapfile -t dotfilesList < <(find "dotfiles" -maxdepth 1 -mindepth 1 -printf "%f\n")
-
-rm $HOME/.config/helpers
-rm -rf $HOME/.config/hypr
-
-for name in "${configsList[@]}"; do
-    dest="${HOME}/.config/${name}"
-    if [ -e "$dest" ]; then
-        rm -rf $dest
-    fi
-done
-
-for name in "${dofilesList[@]}"; do
-    dest="${HOME}/${name}"
-    if [ -e $dest ]; then
-        rm -rf $dest
-    fi
-done
 
 ###############################
 # Configuring
 ###############################
-echo -e "${boldBlue}> Create link for helpers...${noColor}"
-ln -s "${PWD}/helpers" "${HOME}/.config/"
+HelpersLNExist=$(test -L $HOME/.config/helpers && echo "Yes")
+if [[ "$HelpersLNExist" != "Yes" ]]; then
+    echo -e "${boldBlue}> Create link for helpers...${noColor}"
+    ln -s "${PWD}/helpers" "${HOME}/.config/"
+fi
 
 echo -e "${boldBlue}> Create link for dotfiles...${noColor}"
 create_link dotfilesList "${PWD}/dotfiles" $HOME
@@ -199,14 +189,23 @@ create_link dotfilesList "${PWD}/dotfiles" $HOME
 echo -e "${boldBlue}> Create link for configs...${noColor}"
 create_link configsList "${PWD}/configs/.config" "${HOME}/.config"
 
-echo -e "${boldBlue}> Create link for fonts...${noColor}"
-ln -s "${PWD}/.fonts" "${HOME}/.fonts"
+FontsLNExist=$(test -L $HOME/.fonts && echo "Yes")
+if [[ "$FontsLNExist" != "Yes" ]]; then
+    echo -e "${boldBlue}> Create link for fonts...${noColor}"
+    ln -s "${PWD}/.fonts" "${HOME}"
+fi
 
 if [ ! -d "/usr/share/sddm/themes/sddm-astronaut-theme/" ]; then
     echo -e "${boldBlue}> Install SDDM theme...${noColor}"
     bash -c "$(curl -fsSL https://raw.githubusercontent.com/keyitdev/sddm-astronaut-theme/master/setup.sh)"
 else
     echo -e "${boldBlue}> ${yellow}SDDM theme is already installed...${noColor}"
+fi
+
+NwgLNExist=$(test -L $HOME/.local/share/nwg-look && echo "Yes")
+if [[ "$NwgLNExist" != "Yes" ]]; then
+    echo -e "${boldBlue}> Create link for nwg-look configuration...${noColor}"
+    ln -s "${PWD}/configs/.local/share/nwg-look/" "${HOME}/.local/share/"
 fi
 
 ###############################
@@ -236,35 +235,39 @@ go env -w GOPATH=/home/ben/.local/golang/
 rustup default stable
 
 # configure keyd to map copilet button to right ctrl
-sudo cp -f configs/keyd.conf /etc/keyd/default.conf
-sudo systemctl enable keyd --now
-
-echo -e "${boldBlue}> Configuring FingerPrint...${noColor}"
-if fprintd-list "$USER" 2>/dev/null | grep -q "no fingers enrolled"; then
-    echo -e "${boldBlue}> Roll your finger...${noColor}"
-    fprintd-enroll $USER
-else
-    echo -e "${boldBlue}> ${yellow}Fingerprint already enrolled! ${noColor}"
+if [[ "$COPILOT" == "Yes" ]]; then
+    sudo cp -f configs/keyd.conf /etc/keyd/default.conf
+    sudo systemctl enable keyd --now
 fi
 
-if ! file_contains "pam_fprintd.so" /etc/pam.d/sddm; then
-   echo -e "${boldBlue}> Add FingerPrint auth to Login page(SDDM)...${noColor}"
-   sudo sed -i '2i auth            sufficient                      pam_fprintd.so
-   ' /etc/pam.d/sddm
-else
-   echo -e "${boldBlue}> ${yellow}FingerPrint for Login page is already in use.${noColor}"
-fi
+if [[ "$FNGPRNT" == "Yes" ]]; then
+    echo -e "${boldBlue}> Configuring FingerPrint...${noColor}"
+    if fprintd-list "$USER" 2>/dev/null | grep -q "no fingers enrolled"; then
+        echo -e "${boldBlue}> Roll your finger...${noColor}"
+        fprintd-enroll $USER
+    else
+        echo -e "${boldBlue}> ${yellow}Fingerprint already enrolled! ${noColor}"
+    fi
 
-if ! file_contains "pam_fprintd.so" /etc/pam.d/system-auth; then
-    echo -e "${boldBlue}> Adding PAM to system auth...${noColor}"
-    sudo sed -i '2i auth            sufficient                      pam_fprintd.so
-    ' /etc/pam.d/system-auth
-else
-    echo -e "${boldBlue}> ${yellow}FingerPrint for System auth is already in use.${noColor}"
-fi
+    if ! file_contains "pam_fprintd.so" /etc/pam.d/sddm; then
+       echo -e "${boldBlue}> Add FingerPrint auth to Login page(SDDM)...${noColor}"
+       sudo sed -i '2i auth            sufficient                      pam_fprintd.so
+       ' /etc/pam.d/sddm
+    else
+       echo -e "${boldBlue}> ${yellow}FingerPrint for Login page is already in use.${noColor}"
+    fi
 
-echo -e "${boldBlue}> Enable & start fprintd service...${noColor}"
-sudo systemctl start fprintd
+    if ! file_contains "pam_fprintd.so" /etc/pam.d/system-auth; then
+        echo -e "${boldBlue}> Adding PAM to system auth...${noColor}"
+        sudo sed -i '2i auth            sufficient                      pam_fprintd.so
+        ' /etc/pam.d/system-auth
+    else
+        echo -e "${boldBlue}> ${yellow}FingerPrint for System auth is already in use.${noColor}"
+    fi
+
+    echo -e "${boldBlue}> Enable & start fprintd service...${noColor}"
+    sudo systemctl start fprintd
+fi
 
 echo -e "${boldBlue}> Enable & start waybar service...${noColor}"
 systemctl --user enable --now waybar

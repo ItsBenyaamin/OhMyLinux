@@ -59,6 +59,7 @@ alias dcoup='docker compose up -d'
 alias dcodn='docker compose down'
 alias dcostrt='docker container start'
 alias dcostp='docker container stop'
+alias dcols='docker container ls'
 
 #####  OPTIONS  #####
 #####################
